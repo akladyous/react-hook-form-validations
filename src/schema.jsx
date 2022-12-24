@@ -3,9 +3,6 @@ import * as Yup from "yup";
 export const schema = {
   name: "pet",
   fields: {
-    image: {
-      attributes: { type: "file", required: true, name: "image" },
-    },
     name: {
       attributes: { type: "text", name: "name" },
       label: { content: "pet name" },
@@ -14,69 +11,17 @@ export const schema = {
       attributes: { type: "text", required: true, name: "breed" },
       label: { content: "breed" },
     },
-    color: {
-      attributes: { type: "text", required: true, name: "color" },
-      label: { content: "color" },
-    },
-    age: {
-      attributes: {
-        type: "number",
-        required: true,
-        name: "age",
-        min: "1",
-        max: "15",
-      },
-      label: { content: "age" },
-    },
     species: {
       attributes: {
         type: "select",
         name: "species",
         required: true,
-        options: [
-          { value: "dog", label: "dog" },
-          { value: "cat", label: "cat" },
-        ],
       },
+      options: [
+        { value: "dog", label: "dog" },
+        { value: "cat", label: "cat" },
+      ],
       label: { content: "species" },
-    },
-    collar: {
-      attributes: {
-        type: "select",
-        name: "collar",
-        required: false,
-        options: [
-          { value: true, label: "Yes" },
-          { value: false, label: "No" },
-        ],
-      },
-      label: { content: "collar" },
-    },
-    gender: {
-      attributes: {
-        type: "select",
-        name: "gender",
-        required: false,
-        options: [
-          { value: "male", label: "male" },
-          { value: "female", label: "female" },
-        ],
-      },
-      label: { content: "gender" },
-    },
-    size: {
-      attributes: {
-        type: "select",
-        name: "size",
-        required: false,
-        options: [
-          { value: "small", label: "small" },
-          { value: "medium", label: "medium" },
-          { value: "large", label: "large" },
-          { value: "giant", label: "giant" },
-        ],
-      },
-      label: { content: "size" },
     },
     description: {
       attributes: {
@@ -95,20 +40,13 @@ export const schema = {
       "peer block mt-1 w-full rounded-md border-gray-300 py-3 px-4 text-gray-900 shadow-sm focus:border-indigo-500 focus:ring-indigo-500",
   },
   validationSchema: Yup.object().shape({
-    name: Yup.string().required("pet name is equired").min(4),
-    breed: Yup.string().required("breed required").min(5),
-    // color: Yup.string(),
-    // age: Yup.number().min(1).max(15),
-    // species: Yup.string()
-    //   .required("pet species is Required")
-    //   .oneOf(["dog", "cat"]),
-    // collar: Yup.string().oneOf(["Yes", "No"]),
-    // gender: Yup.string().oneOf(["male", "female"]),
-    // size: Yup.string().oneOf(["small", "medium", "large", "giant"]),
-    // description: Yup.string()
-    //   .required("pet description is equired")
-    //   .min(5)
-    //   .max(255)
+    name: Yup.string().required("Pet name equired").min(4),
+    breed: Yup.string().required("Breed required").min(5),
+    species: Yup.string().required("Species Required").oneOf(["dog", "cat"]),
+    description: Yup.string()
+      .required("pet description is equired")
+      .min(5)
+      .max(255),
   }),
   get initialValues() {
     const defaultValues = {};
@@ -117,12 +55,6 @@ export const schema = {
         this.fields[field].attributes.type === "file" ? null : "";
     }
     return defaultValues;
-    /*
-    return Object.keys(this.fields).reduce((acc, val) => {
-      acc[val] = val.attributes.type === "file" ? null : "";
-      return acc;
-    }, {});
-     */
   },
   get validation() {
     return yupResolver(this.validationSchema);
